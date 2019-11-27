@@ -1,0 +1,8 @@
+<launch>
+
+    <node   pkg="rviz" 
+            type="rviz"
+            name="display_rgbd_and_cloud" 
+            args="-d $(find ros_pub_and_sub_rgbd_and_cloud)/config/rgbd_and_cloud.rviz" />
+
+</launch>
