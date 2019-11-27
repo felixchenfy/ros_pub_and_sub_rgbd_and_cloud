@@ -9,12 +9,31 @@ import simplejson
 import open3d
 
 
+
+
 class MyCameraInfo():
+
     def __init__(self, camera_info_json_file_path):
         data = read_json_file(camera_info_json_file_path)
-        self._width = data["width"]  # float
-        self._height = data["height"]  # float
-        self._intrinsic_matrix = data["intrinsic_matrix"]  # list of float
+        self._width = int(data["width"])  # int.
+        self._height = int(data["height"])  # int.
+        self._intrinsic_matrix = data["intrinsic_matrix"]  # list of float.
+        # The list extracted from the matrix **column by column** !!!.
+        # If the intrinsic matrix is:
+        # [fx,  0, cx],
+        # [ 0, fy, cy],
+        # [ 0,  0,  1],
+        # Then, self._intrinsic_matrix = [fx, 0, 0, 0, fy, 0, cx, cy, 1]
+
+    def resize(self, ratio):
+        r0, c0 = self._height, self._width
+        if not (is_int(r0*ratio) and is_int(c0*ratio)):
+            raise RuntimeError(
+                "Only support resizing image to an interger size.")
+        self._width = int(ratio * self._width)
+        self._height = int(ratio * self._height)
+        self._intrinsic_matrix[:-1] = [x*ratio
+                                       for x in self._intrinsic_matrix[:-1]]
 
     def width(self):
         return self._width
@@ -25,22 +44,25 @@ class MyCameraInfo():
     def intrinsic_matrix(self):
         return self._intrinsic_matrix
 
-    def to_open3d_format(self):
-        ''' Convert camera info to open3d format.
-        See `class open3d.camera.PinholeCameraIntrinsic`
-        at: http://www.open3d.org/docs/release/python_api/open3d.camera.PinholeCameraIntrinsic.html#open3d.camera.PinholeCameraIntrinsic
-
+    def get_cam_params(self):
+        ''' Get all camera parameters. 
         Notes: intrinsic_matrix:
-            0: fx, 1   0, 2:  cx
-            3:  0, 4: fy, 5:  cy
-            6:  0, 7   0, 8:   1
+            [0]: fx, [3]   0, [6]:  cx
+            [1]:  0, [4]: fy, [7]:  cy
+            [2]:  0, [5]   0, [8]:   1
         '''
         im = self._intrinsic_matrix
+        row, col = self._height, self._width
+        fx, fy, cx, cy = im[0], im[4], im[6], im[7]
+        return row, col, fx, fy, cx, cy
+
+    def to_open3d_format(self):
+        ''' Convert camera info to open3d format of `class open3d.camera.PinholeCameraIntrinsic`.
+        Reference: http://www.open3d.org/docs/release/python_api/open3d.camera.PinholeCameraIntrinsic.html
+        '''
+        row, col, fx, fy, cx, cy = self.get_cam_params()
         open3d_camera_info = open3d.camera.PinholeCameraIntrinsic(
-            width=self._width,
-            height=self._height,
-            fx=im[0], fy=im[4],
-            cx=im[2], cy=im[5])
+            col, row, fx, fy, cx, cy)
         return open3d_camera_info
 
 

@@ -126,7 +126,7 @@ class CameraInfoPublisher():
                 (3) intrinsic_matrix
         Arguments:
             intrinsic_matrix {1D list or 2D list}: 
-                If 1D list, the data order is: row1, row2, row3.
+                If 1D list, the data order is: column1, column2, column3.
         '''
         # -- Set camera info.
         camera_info = self._default_camera_info

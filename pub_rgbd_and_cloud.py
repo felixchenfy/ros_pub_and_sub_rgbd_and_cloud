@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import utils.lib_commons as lib_commons
-from utils.lib_cv import MyCameraInfo, create_open3d_point_cloud_from_rgbd
+from utils.lib_rgbd import MyCameraInfo, create_open3d_point_cloud_from_rgbd
 
 from utils.lib_ros_rgbd_pub_and_sub import ColorImagePublisher, DepthImagePublisher, CameraInfoPublisher
 from utils.lib_ros_point_cloud_pub_and_sub import PointCloudPublisher
