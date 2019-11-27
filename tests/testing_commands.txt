@@ -1,0 +1,14 @@
+# Some commands for testing.
+
+# Test: Only publish point cloud. Disable loop.
+roslaunch ros_pub_and_sub_rgbd_and_cloud run_publisher.launch \
+    config_file:="tests/publisher_settings_2.yaml"
+
+
+# Test: Only publish color + camera info.
+roslaunch ros_pub_and_sub_rgbd_and_cloud run_publisher.launch \
+    config_file:="tests/publisher_settings_3.yaml"
+
+# Test: Only publish depth.
+roslaunch ros_pub_and_sub_rgbd_and_cloud run_publisher.launch \
+    config_file:="tests/publisher_settings_4.yaml"

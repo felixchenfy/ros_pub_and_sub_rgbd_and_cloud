@@ -189,15 +189,16 @@ class AbstractImageSubscriber(object):
         pass
 
     def get_image(self):
-        ''' Return the next image subscribed from ROS topic in cv2 format. '''
+        ''' Get the next image subscribed from ROS topic,
+            convert to desired opencv format, and then return. '''
         if not self.has_image():
-            return None
+            raise RuntimeError("Failed to get_image().")
         ros_image = self._imgs_queue.get(timeout=0.05)
         dst_image = self._convert_ros_image_to_desired_image_format(ros_image)
         return dst_image
 
     def has_image(self):
-        return self._img_queues_qsize() > 0
+        return self._imgs_queue.qsize() > 0
 
     def _callback_of_image_subscriber(self, ros_image):
         ''' Save the received image into queue.
@@ -227,3 +228,24 @@ class DepthImageSubscriber(AbstractImageSubscriber):
     def _convert_ros_image_to_desired_image_format(self, ros_image):
         ''' To np.ndarray np.uint16 format. '''
         return self._cv_bridge.imgmsg_to_cv2(ros_image, "16UC1")  # not 32FC1
+
+
+class CameraInfoSubscriber(object):
+
+    def __init__(self, topic_name):
+        self._camera_info = None
+        self._sub = rospy.Subscriber(
+            topic_name, CameraInfo, self._callback)
+
+    def get_camera_info(self):
+        if self._camera_info is None:
+            raise RuntimeError("Failed to get_camera_info().")
+        camera_info = self._camera_info
+        self._camera_info = None  # Reset data.
+        return camera_info
+
+    def has_camera_info(self):
+        return self._camera_info != None
+
+    def _callback(self, camera_info):
+        self._camera_info = camera_info

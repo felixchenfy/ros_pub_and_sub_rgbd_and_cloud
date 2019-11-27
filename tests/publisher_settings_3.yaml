@@ -5,18 +5,13 @@ pub_frequency: 0.5 # How many data to publish per second.
 is_loop_forever: True # After reading all images from the folder, loop back to the 1st one.
 frame_id: "head_camera" # Name of the camera frame.
 
-# Warning:
-# About data path:
-#   If a data path is a `relative_path` which doesn't start with "/",
-#   then the ROOT of this project will be inserted in front of the data path.
-
 color:
   is_publish: True
   folder: "data/color/"
   ros_topic: "color"
 
 depth:
-  is_publish: True
+  is_publish: False
   folder: "data/depth/"
   depth_unit: 0.001 # If depth[i,j]=D, then this pixel's depth is (depth_unit*D) meters.
   depth_trunc: 3.0 # Depth value larger than ${depth_trunc} meters gets truncated to zero.
@@ -28,5 +23,5 @@ camera_info:
   ros_topic: "camera_info"
 
 point_cloud:
-  is_publish: True
+  is_publish: False
   ros_topic: "point_cloud"
