@@ -115,3 +115,9 @@ def read_json_file(file_path):
     with open(file_path, 'r') as f:
         data = simplejson.load(f)
     return data
+
+def is_int(num):
+    ''' Is floating number very close to a int. '''
+    # print(is_int(0.0000001)) # False
+    # print(is_int(0.00000001)) # True
+    return np.isclose(np.round(num), num)
