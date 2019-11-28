@@ -1,6 +1,6 @@
 <launch>
 
-    <arg name="config_file" default="$(find ros_pub_and_sub_rgbd_and_cloud)/config/publisher_settings.yaml" />
+    <arg name="config_file" default="$(find ros_pub_and_sub_rgbd_and_cloud)/config/rgbd_pub_config.yaml" />
 
     <node pkg="tf" type="static_transform_publisher"
         name="set_camera_pose_at_origin"

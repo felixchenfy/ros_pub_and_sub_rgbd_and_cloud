@@ -75,7 +75,7 @@ Visualization Manager:
     - Class: rviz/Camera
       Enabled: true
       Image Rendering: background and overlay
-      Image Topic: /my_test/color
+      Image Topic: /test_data/color
       Name: Camera_color
       Overlay Alpha: 0.5
       Queue Size: 2
@@ -92,7 +92,7 @@ Visualization Manager:
       Zoom Factor: 1
     - Class: rviz/Image
       Enabled: true
-      Image Topic: /my_test/color
+      Image Topic: /test_data/color
       Max Value: 1
       Median window: 5
       Min Value: 0
@@ -104,7 +104,7 @@ Visualization Manager:
       Value: true
     - Class: rviz/Image
       Enabled: true
-      Image Topic: /my_test/depth
+      Image Topic: /test_data/depth
       Max Value: 1
       Median window: 5
       Min Value: 0
@@ -139,7 +139,7 @@ Visualization Manager:
       Size (Pixels): 3
       Size (m): 0.009999999776482582
       Style: Flat Squares
-      Topic: /my_test/point_cloud
+      Topic: /test_data/point_cloud
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true

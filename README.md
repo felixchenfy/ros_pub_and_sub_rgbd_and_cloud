@@ -4,24 +4,26 @@
 
 # Introduction
 This package has two nodes:
-1. `pub_rgbd_and_cloud.py`: For publishing rgbd images and cloud to ROS topics.
+1. `pub_rgbd_and_cloud.py`: For publishing rgbd images and their corresponding point clouds to ROS topics as set by [config/rgbd_pub_config.yaml](config/rgbd_pub_config.yaml).
 2. `sub_rgbd_and_cloud.py`: Example code of subscribing these data.
 
-What data you can publish:
+You can publish any combination of the following 4 data types by setting `is_publish` to `True` in the configuration file:
 1. color image (read from a folder).
 2. depth image (read from a folder).
 3. camera_info (read from a file, without distortion).
 4. point cloud (generated from color, depth, and camera_info)
 
-You can publish any combination of the above data (e.g., color only, or color + depth + point cloud, etc.) as long as the data paths set in [config/publisher_settings.yaml](config/publisher_settings.yaml) are valid, and the following requirements are satisfied:
-  * If publishing both `color` and `depth`, their filename should be the same in their respective folder.
-  * If publishing `point cloud`, the data paths of all `color` and `depth` and `camera_info` need to be valid, because the point cloud is generated from them.
+Notes about data paths:
+  * If publishing both `color` and `depth` images, their filename should be the same in their respective folder (e.g.: `color/001.png` and `depth/001.png`.)
+  * If publishing `point cloud`, data paths of all `color` and `depth` and `camera_info` need to be valid, because the point cloud is generated from them.
+  * If a data path is a relative path (e.g.: `folder: "data/color/"`), then the file path of the publisher node (i.e. [pub_rgbd_and_cloud.py](pub_rgbd_and_cloud.py)) will be inserted to the front to form an absolute path.
+  
 
-Some test data are included in the `data/` folder. You may clone this repo to the `~/catkin_ws/src/`, and then run  following commands to test this package.
+Test data are already included in the `data/` folder. You may clone this repo to your ROS catkin workspace, and then run following commands to test this package.
 
 # Usage instructions
 
-(0) Check configurations in [config/publisher_settings.yaml](config/publisher_settings.yaml).
+(0) Check configurations in [config/rgbd_pub_config.yaml](config/rgbd_pub_config.yaml).
     Make ROS nodes executable:
 ``` bash
 chmod a+x pub_rgbd_and_cloud.py
@@ -39,17 +41,18 @@ This step is just for visualization in rviz. The camera's frame_id `head_camera`
 (2) Publish data:
 ``` bash
 $ rosrun ros_pub_and_sub_rgbd_and_cloud pub_rgbd_and_cloud.py \
-    --config_file config/publisher_settings.yaml
+    --config_file config/rgbd_pub_config.yaml
 ```
 
 
 (3) View result in RVIZ:
+(If you change the topic names in config file, you also need to change it in rviz.)
 ``` bash
 $ roslaunch ros_pub_and_sub_rgbd_and_cloud run_rviz.launch 
 ```
 
 
-(4) Run steps (1)~(3) by using `roslaunch` (You may stop the above 3 commands first):
+(4) Run steps (1)~(3) by using `roslaunch` (You need stop the above 3 commands first):
 ``` bash
 $ roslaunch ros_pub_and_sub_rgbd_and_cloud run_publisher.launch
 ```
@@ -58,7 +61,7 @@ $ roslaunch ros_pub_and_sub_rgbd_and_cloud run_publisher.launch
 (5) Subscribe data:
 ``` bash
 $ rosrun ros_pub_and_sub_rgbd_and_cloud sub_rgbd_and_cloud.py \
-    --config_file config/publisher_settings.yaml
+    --config_file config/rgbd_pub_config.yaml
 ```
 
 # Other Notes

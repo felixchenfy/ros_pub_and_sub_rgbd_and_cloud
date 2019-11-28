@@ -29,10 +29,10 @@ def parse_command_line_argumetns():
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     parser.add_argument("-c", "--config_file", required=False,
-                        default='config/publisher_settings.yaml',
+                        default='config/rgbd_pub_config.yaml',
                         help="Path to the config file. "
                         "If the path is relative, this ROS package's path will be inserted to the beginning. "
-                        "Default='config/publisher_settings.yaml'")
+                        "Default='config/rgbd_pub_config.yaml'")
     args = parser.parse_args(rospy.myargv()[1:])
 
     # -- Deal with relative path.

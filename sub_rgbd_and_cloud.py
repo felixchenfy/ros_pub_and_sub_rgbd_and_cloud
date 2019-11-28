@@ -12,38 +12,28 @@ This script gives exampe code for subscribing:
 from utils.lib_ros_rgbd_pub_and_sub import ColorImageSubscriber, DepthImageSubscriber, CameraInfoSubscriber
 from utils.lib_ros_point_cloud_pub_and_sub import PointCloudSubscriber
 
-from pub_rgbd_and_cloud import PAR, parse_command_line_argumetns, read_config_file
-
 import numpy as np
 import rospy
-import argparse
+
+# -- Set ROS topic names for subscribing.
+NS = "test_data/"  # ROS topic namespace.
+COLOR_TOPIC_NAME = NS + "color"
+DEPTH_TOPIC_NAME = NS + "depth"
+CAMERA_INFO_TOPIC_NAME = NS + "camera_info"
+CLOUD_TOPIC_NAME = NS + "point_cloud"
 
 
-def main(config):
-    ''' 
-    Arguments:
-        config {dict}: Read from a config file such as `config/run_publisher.launch`. 
-    '''
+# -- Subscribe data and print.
+def main():
 
     # -- Set subscribers.
-    ns = config["ros_topic_namespace"] + "/"
-    frame_id = config["frame_id"]
-
-    topic_name = ns + config["color"]["ros_topic"]
-    sub_color = ColorImageSubscriber(topic_name)
-
-    topic_name = ns + config["depth"]["ros_topic"]
-    sub_depth = DepthImageSubscriber(topic_name)
-
-    topic_name = ns + config["camera_info"]["ros_topic"]
-    sub_camera_info = CameraInfoSubscriber(topic_name)
-
-    topic_name = ns + config["point_cloud"]["ros_topic"]
-    sub_cloud = PointCloudSubscriber(topic_name)
-
-    cnt_1, cnt_2, cnt_3, cnt_4 = 0, 0, 0, 0  # color, depth, camera_info, cloud
+    sub_color = ColorImageSubscriber(COLOR_TOPIC_NAME)
+    sub_depth = DepthImageSubscriber(DEPTH_TOPIC_NAME)
+    sub_camera_info = CameraInfoSubscriber(CAMERA_INFO_TOPIC_NAME)
+    sub_cloud = PointCloudSubscriber(CLOUD_TOPIC_NAME)
 
     # -- Loop and subscribe.
+    cnt_1, cnt_2, cnt_3, cnt_4 = 0, 0, 0, 0  # color, depth, camera_info, cloud
     while not rospy.is_shutdown():
 
         # Color.
@@ -88,7 +78,5 @@ def main(config):
 if __name__ == '__main__':
     node_name = "sub_rgbd_and_cloud"
     rospy.init_node(node_name)
-    args = parse_command_line_argumetns()
-    config = read_config_file(args.config_file)
-    main(config)
+    main()
     rospy.logwarn("Node `{}` stops.".format(node_name))
