@@ -199,7 +199,7 @@ def main(config):
 
     # -- Loop and publish.
     is_loop_forever = config["is_loop_forever"]
-    loop_rate = rospy.Rate(config["pub_frequency"])
+    loop_rate = rospy.Rate(config["publish_rate"])
 
     while not rospy.is_shutdown():
 

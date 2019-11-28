@@ -1,7 +1,7 @@
 # Configuration for `pub_rgbd_and_cloud.py`.
 
 ros_topic_namespace: "test_data"
-pub_frequency: 0.5 # How many data to publish per second.
+publish_rate: 0.5 # How many data to publish per second.
 is_loop_forever: False # After reading all images from the folder, loop back to the 1st one.
 frame_id: "head_camera" # Name of the camera frame.
 

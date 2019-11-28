@@ -3,7 +3,7 @@
 ![](doc/rviz_demo.png)
 
 # Introduction
-This package has two nodes:
+This package has three nodes:
 1. `pub_rgbd_and_cloud.py`: For publishing rgbd images and their corresponding point clouds to ROS topics as set by [config/rgbd_pub_config.yaml](config/rgbd_pub_config.yaml).
 2. `sub_rgbd_and_cloud.py`: Example code of subscribing these data.
 
@@ -20,6 +20,8 @@ Notes about data paths:
   
 
 Test data are already included in the `data/` folder. You may clone this repo to your ROS catkin workspace, and then run following commands to test this package.
+
+
 
 # Usage instructions
 
