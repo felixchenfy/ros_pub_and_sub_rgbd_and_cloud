@@ -205,8 +205,8 @@ def main(config):
     loop_rate = rospy.Rate(config["publish_rate"])
 
     num_total_imgs = rgbd_data.get_number_of_images()
-    cnt_total_imgs = 0
-    cnt_imgs_in_one_loop = 0
+    cnt_imgs = 0
+    ith_img = 0
 
     while not rospy.is_shutdown():
 
@@ -214,17 +214,17 @@ def main(config):
         if not rgbd_data.has_data():
             if is_loop_forever:  # Reset data loader.
                 rgbd_data.reset()
-                cnt_imgs_in_one_loop = 0
+                ith_img = 0
             else:  # Stop program.
                 break
         color, depth, camera_info, cloud = rgbd_data.read_next_data()
-        cnt_total_imgs += 1
-        cnt_imgs_in_one_loop += 1
+        cnt_imgs += 1
+        ith_img += 1
 
         # -- Publish data.
         rospy.loginfo("=================================================")
         rospy.loginfo("Publish {}/{}th data; {} published in total.".format(
-            cnt_imgs_in_one_loop, num_total_imgs, cnt_total_imgs))
+            ith_img, num_total_imgs, cnt_imgs))
 
         # Color.
         if rgbd_data.is_pub_color():
