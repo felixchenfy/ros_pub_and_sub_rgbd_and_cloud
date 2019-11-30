@@ -20,7 +20,7 @@ BASE_DIR = None
 
 
 def PAB(relative_path):  # Pre-Append base_dir to the relative path.
-    if relative_path[0] == "/":  # This is absolute path.
+    if relative_path and relative_path[0] == "/":  # This is absolute path.
         return relative_path
     return BASE_DIR + relative_path
 
