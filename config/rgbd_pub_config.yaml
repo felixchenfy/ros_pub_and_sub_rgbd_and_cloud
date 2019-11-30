@@ -2,7 +2,7 @@
 
 ros_topic_namespace: "test_data"
 publish_rate: 0.5 # How many data to publish per second.
-is_loop_forever: True # After reading all images from the folder, loop back to the 1st one.
+is_loop_forever: True # After publishing all images, loop back to the 1st one.
 frame_id: "head_camera" # Name of the camera frame.
 
 color:

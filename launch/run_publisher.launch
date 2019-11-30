@@ -1,6 +1,7 @@
 <launch>
 
-    <arg name="config_file" default="$(find ros_pub_and_sub_rgbd_and_cloud)/config/rgbd_pub_config.yaml" />
+    <arg name="base_dir" default="$(find ros_pub_and_sub_rgbd_and_cloud)" />
+    <arg name="config_file" default="config/rgbd_pub_config.yaml" />
 
     <node pkg="tf" type="static_transform_publisher"
         name="set_camera_pose_at_origin"
@@ -10,7 +11,7 @@
     <node pkg="ros_pub_and_sub_rgbd_and_cloud"
         type="pub_rgbd_and_cloud.py"
         name="pub_rgbd_and_cloud"
-        args="--config_file $(arg config_file)"
+        args="--base_dir $(arg base_dir) --config_file $(arg config_file)"
         output = "screen"
     />
     

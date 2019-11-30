@@ -14,13 +14,15 @@ import argparse
 import os
 import sys
 import rospy
+
 ROOT = os.path.dirname(os.path.abspath(__file__))+'/'
+BASE_DIR = None
 
 
-def PAR(relative_path):  # Pre-Append Root to the relative path.
+def PAB(relative_path):  # Pre-Append base_dir to the relative path.
     if relative_path[0] == "/":  # This is absolute path.
         return relative_path
-    return ROOT + relative_path
+    return BASE_DIR + relative_path
 
 
 def parse_command_line_argumetns():
@@ -28,16 +30,25 @@ def parse_command_line_argumetns():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
+    parser.add_argument("-b", "--base_dir", required=False,
+                        default=ROOT,
+                        help="This base_dir will be prepended to all "
+                        "relative data paths to make the paths absolute.")
+
     parser.add_argument("-c", "--config_file", required=False,
                         default='config/rgbd_pub_config.yaml',
                         help="Path to the config file. "
                         "If the path is relative, this ROS package's path will be inserted to the beginning. "
                         "Default='config/rgbd_pub_config.yaml'")
+
     args = parser.parse_args(rospy.myargv()[1:])
+
+    global BASE_DIR
+    BASE_DIR = args.base_dir + "/"
 
     # -- Deal with relative path.
     rospy.loginfo("args.config_file:" + args.config_file)
-    args.config_file = PAR(args.config_file)
+    args.config_file = PAB(args.config_file)
     return args
 
 
@@ -118,9 +129,9 @@ class RgbdDataLoader(object):
         self._depth_unit = float(config["depth"]["depth_unit"])
         self._depth_trunc = float(config["depth"]["depth_trunc"])
 
-        color_folder = PAR(config["color"]["folder"])
-        depth_folder = PAR(config["depth"]["folder"])
-        camera_info_file_path = PAR(config["camera_info"]["file"])
+        color_folder = PAB(config["color"]["folder"])
+        depth_folder = PAB(config["depth"]["folder"])
+        camera_info_file_path = PAB(config["camera_info"]["file"])
 
         # -- Whether read data or not.
         # If we need to publish data, then we need to read it first.

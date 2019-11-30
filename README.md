@@ -1,5 +1,12 @@
 # ROS publisher/subscriber for rgbd image and its point cloud 
 
+Example of usage:
+```
+$ rosrun ros_pub_and_sub_rgbd_and_cloud pub_rgbd_and_cloud.py \
+    --base_dir $(rospack find ros_pub_and_sub_rgbd_and_cloud) \
+    --config_file config/rgbd_pub_config.yaml
+```
+
 ![](doc/rviz_demo.png)
 
 # Introduction
@@ -16,7 +23,7 @@ You can publish any combination of the following 4 data types by setting `is_pub
 Notes about data paths:
   * If publishing both `color` and `depth` images, their filename should be the same in their respective folder (e.g.: `color/001.png` and `depth/001.png`.)
   * If publishing `point cloud`, data paths of all `color` and `depth` and `camera_info` need to be valid, because the point cloud is generated from them.
-  * If a data path is a relative path (e.g.: `folder: "data/color/"`), then the file path of the publisher node (i.e. [pub_rgbd_and_cloud.py](pub_rgbd_and_cloud.py)) will be inserted to the front to form an absolute path.
+  * If a data path is a relative path (e.g.: `folder: "data/color/"`), then the command line argument `base_dir` will be prepended to create an absolute path.
   
 
 Test data are already included in the `data/` folder. You may clone this repo to your ROS catkin workspace, and then run following commands to test this package.
@@ -43,6 +50,7 @@ This step is just for visualization in rviz. The camera's frame_id `head_camera`
 (2) Publish data:
 ``` bash
 $ rosrun ros_pub_and_sub_rgbd_and_cloud pub_rgbd_and_cloud.py \
+    --base_dir $(rospack find ros_pub_and_sub_rgbd_and_cloud) \
     --config_file config/rgbd_pub_config.yaml
 ```
 
@@ -63,6 +71,7 @@ $ roslaunch ros_pub_and_sub_rgbd_and_cloud run_publisher.launch
 (5) Subscribe data:
 ``` bash
 $ rosrun ros_pub_and_sub_rgbd_and_cloud sub_rgbd_and_cloud.py \
+    --base_dir $(rospack find ros_pub_and_sub_rgbd_and_cloud) \
     --config_file config/rgbd_pub_config.yaml
 ```
 
