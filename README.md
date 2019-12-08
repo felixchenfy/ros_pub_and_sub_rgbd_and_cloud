@@ -6,6 +6,7 @@ $ rosrun ros_pub_and_sub_rgbd_and_cloud pub_rgbd_and_cloud.py \
     --base_dir $(rospack find ros_pub_and_sub_rgbd_and_cloud) \
     --config_file config/rgbd_pub_config.yaml
 ```
+For quick unit test, run: `bash run_test_case.sh`
 
 ![](doc/rviz_demo.png)
 
