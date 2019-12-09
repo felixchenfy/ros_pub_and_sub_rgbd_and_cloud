@@ -7,12 +7,12 @@ frame_id: "head_camera" # Name of the camera frame.
 
 color:
   is_publish: True
-  folder: "data/color/"
+  folder: "data/color/" # relatvie to the --base_dir.
   ros_topic: "color"
 
 depth:
   is_publish: True
-  folder: "data/depth/"
+  folder: "data/depth/" # relatvie to the --base_dir.
   ros_topic: "depth"
 
   # -- Settings for creating point cloud
@@ -24,7 +24,7 @@ depth:
 
 camera_info:
   is_publish: True
-  file: "config/cam_params_realsense.json"
+  file: "config/cam_params_realsense.json" # relatvie to the --base_dir.
   ros_topic: "camera_info"
 
 point_cloud:
