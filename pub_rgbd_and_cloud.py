@@ -82,13 +82,17 @@ class RgbdDataLoader(object):
         if self._is_read_color:
             filename = self._color_names[self._cnt_images]
             color = cv2.imread(filename, cv2.IMREAD_COLOR)
-            assert(color is not None)
+            if color is None:
+                raise RuntimeError(
+                    "Failed to read color image from: " + filename)
 
         # Read depth image.
         if self._is_read_depth:
             filename = self._depth_names[self._cnt_images]
             depth = cv2.imread(filename, cv2.IMREAD_UNCHANGED)
-            assert(depth is not None)
+            if depth is None:
+                raise RuntimeError(
+                    "Failed to read depth image from: " + filename)
 
         # Read camera_info (which has already been read).
         if self._is_read_camera_info:
@@ -129,8 +133,8 @@ class RgbdDataLoader(object):
         self._depth_unit = float(config["depth"]["depth_unit"])
         self._depth_trunc = float(config["depth"]["depth_trunc"])
 
-        color_folder = PAB(config["color"]["folder"])
-        depth_folder = PAB(config["depth"]["folder"])
+        color_folder = PAB(config["color"]["folder"]) + "/"
+        depth_folder = PAB(config["depth"]["folder"]) + "/"
         camera_info_file_path = PAB(config["camera_info"]["file"])
 
         # -- Whether read data or not.
