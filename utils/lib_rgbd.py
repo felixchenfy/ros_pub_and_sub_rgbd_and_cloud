@@ -7,14 +7,20 @@ Computer vision related functions and classes:
 import cv2
 import simplejson
 import open3d
-
-
+import numpy as np
 
 
 class MyCameraInfo():
 
-    def __init__(self, camera_info_json_file_path):
-        data = read_json_file(camera_info_json_file_path)
+    def __init__(self,
+                 camera_info_file_path=None,
+                 ros_camera_info=None):
+        if camera_info_file_path is not None:
+            data = read_json_file(camera_info_file_path)
+        elif ros_camera_info is not None:
+            data = self._from_ros_camera_info(ros_camera_info)
+        else:
+            raise RuntimeError("Invalid input for MyCameraInfo().")
         self._width = int(data["width"])  # int.
         self._height = int(data["height"])  # int.
         self._intrinsic_matrix = data["intrinsic_matrix"]  # list of float.
@@ -64,6 +70,14 @@ class MyCameraInfo():
         open3d_camera_info = open3d.camera.PinholeCameraIntrinsic(
             col, row, fx, fy, cx, cy)
         return open3d_camera_info
+
+    def _from_ros_camera_info(self, ros_camera_info):
+        data = {
+            "width": ros_camera_info.width,
+            "height": ros_camera_info.height,
+            "intrinsic_matrix": ros_camera_info.K,
+        }
+        return data
 
 
 def create_open3d_point_cloud_from_rgbd(
@@ -115,6 +129,7 @@ def read_json_file(file_path):
     with open(file_path, 'r') as f:
         data = simplejson.load(f)
     return data
+
 
 def is_int(num):
     ''' Is floating number very close to a int. '''

@@ -170,7 +170,8 @@ class RgbdDataLoader(object):
 
         # -- Read camera info.
         if self._is_read_camera_info:
-            self._camera_info = MyCameraInfo(camera_info_file_path)
+            self._camera_info = MyCameraInfo(
+                camera_info_file_path=camera_info_file_path)
         else:
             self._camera_info = None
 

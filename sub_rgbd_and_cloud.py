@@ -11,6 +11,7 @@ This script gives exampe code for subscribing:
 
 from utils.lib_ros_rgbd_pub_and_sub import ColorImageSubscriber, DepthImageSubscriber, CameraInfoSubscriber
 from utils.lib_ros_point_cloud_pub_and_sub import PointCloudSubscriber
+from utils.lib_rgbd import MyCameraInfo
 
 import numpy as np
 import rospy
@@ -54,14 +55,15 @@ def main():
 
         # Camera_info.
         if sub_camera_info.has_camera_info():
-            camera_info = sub_camera_info.get_camera_info()
+            ros_camera_info = sub_camera_info.get_camera_info()
             cnt_3 += 1
             rospy.loginfo("Subscribe {}: camera_info, "
                           "fx={}, fy={}.".format(
                               cnt_3,
-                              camera_info.K[0],
-                              camera_info.K[4],
+                              ros_camera_info.K[0],
+                              ros_camera_info.K[4],
                           ))
+            my_camera_info = MyCameraInfo(ros_camera_info=ros_camera_info)
 
         # Point_cloud.
         if sub_cloud.has_cloud():
