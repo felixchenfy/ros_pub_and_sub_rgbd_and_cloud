@@ -165,6 +165,10 @@ class RgbdDataLoader(object):
             depth_names = [depth_folder + s for s in color_base_names]
 
         # store result
+        if color_names is not None and len(color_names) == 0:
+            raise RuntimeError("Color image folder is empty: " + color_folder)
+        if depth_names is not None and len(depth_names) == 0:
+            raise RuntimeError("Depth image folder is empty: " + depth_folder)
         self._color_names = color_names
         self._depth_names = depth_names
 
