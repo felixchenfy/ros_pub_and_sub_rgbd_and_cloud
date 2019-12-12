@@ -84,19 +84,20 @@ class MyCameraInfo():
         }
         return data
 
+
 def create_open3d_point_cloud_from_rgbd(
         color_img, depth_img,
-        camera_info,
+        cam_info,
         depth_unit=0.001,
         depth_trunc=3.0):
     ''' Create pointcreate_open3dpoint_cloud_from_rgbd cloud of open3d format, given opencv rgbd images and camera info.
     Arguments:
-        color_img {np.ndarry, np.uint8}: 
+        color_img {np.ndarry, np.uint8}:
             3 channels of BGR. Undistorted.
-        depth_img {np.ndarry, np.uint16}: 
+        depth_img {np.ndarry, np.uint16}:
             Undistorted depth image that matches color_img.
-        camera_info {MyCameraInfo}
-        depth_unit {float}: 
+        cam_info {CameraInfo}
+        depth_unit {float}:
             if depth_img[i, j] is x, then the real depth is x*depth_unit meters.
         depth_trunc {float}:
             Depth value larger than ${depth_trunc} meters
@@ -108,21 +109,18 @@ def create_open3d_point_cloud_from_rgbd(
     '''
 
     # Create `open3d.geometry.RGBDImage` from color_img and depth_img.
-    # http://www.open3d.org/docs/0.7.0/python_api/open3d.geometry.create_rgbd_image_from_color_and_depth.html#open3d.geometry.create_rgbd_image_from_color_and_depth
-    rgbd_image = open3d.create_rgbd_image_from_color_and_depth(
-        color=open3d.Image(cv2.cvtColor(color_img, cv2.COLOR_BGR2RGB)),
-        depth=open3d.Image(depth_img),
+    rgbd_image = open3d.geometry.RGBDImage.create_from_color_and_depth(
+        color=open3d.geometry.Image(cv2.cvtColor(color_img, cv2.COLOR_BGR2RGB)),
+        depth=open3d.geometry.Image(depth_img),
         depth_scale=1.0/depth_unit,
         convert_rgb_to_intensity=False)
 
     # Convert camera info to `class open3d.camera.PinholeCameraIntrinsic`.
-    # http://www.open3d.org/docs/release/python_api/open3d.camera.PinholeCameraIntrinsic.html
-    pinhole_camera_intrinsic = camera_info.to_open3d_format()
+    pinhole_camera_intrinsic = cam_info.to_open3d_format()
 
     # Project image pixels into 3D world points.
     # Output type: `class open3d.geometry.PointCloud`.
-    # http://www.open3d.org/docs/0.6.0/python_api/open3d.geometry.create_point_cloud_from_rgbd_image.html#open3d.geometry.create_point_cloud_from_rgbd_image
-    open3d_point_cloud = open3d.create_point_cloud_from_rgbd_image(
+    open3d_point_cloud = open3d.geometry.PointCloud.create_from_rgbd_image(
         image=rgbd_image,
         intrinsic=pinhole_camera_intrinsic)
 
