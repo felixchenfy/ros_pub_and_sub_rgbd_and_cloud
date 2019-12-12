@@ -72,13 +72,17 @@ class MyCameraInfo():
         return open3d_camera_info
 
     def _from_ros_camera_info(self, ros_camera_info):
+        K = ros_camera_info.K  # ROS is row majored.
+        # However, here I'm using column majored.
         data = {
             "width": ros_camera_info.width,
             "height": ros_camera_info.height,
-            "intrinsic_matrix": ros_camera_info.K,
+            "intrinsic_matrix": [
+                K[0], K[3], K[6],
+                K[1], K[4], K[7],
+                K[2], K[5], K[8]]
         }
         return data
-
 
 def create_open3d_point_cloud_from_rgbd(
         color_img, depth_img,
